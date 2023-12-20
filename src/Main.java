@@ -1,9 +1,8 @@
 import java.util.ArrayList;
-        import java.util.InputMismatchException;
-        import java.util.Scanner;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Main {
-    private static boolean flag;
     public static void main(String[] args) {
         ArrayList<Laptop> notebooks = new ArrayList<>();
         notebooks.add(new Laptop("Lenovo", 8.0, 500.0, "Windows", "Black"));
@@ -11,12 +10,6 @@ public class Main {
         notebooks.add(new Laptop("Dell", 12.0, 750.0, "Windows", "Silver"));
         notebooks.add(new Laptop("Asus", 16.0, 1000.0, "Windows", "Gray"));
         notebooks.add(new Laptop("Acer", 8.0, 512.0, "Linux", "Black"));
-        if (flag == true) {
-            ArrayList<Laptop> filteredNotebooks = filterLaptops(notebooks, "Windows", 8.0);
-            for (Laptop laptop : filteredNotebooks) {
-                System.out.println("Найден ноутбук: " + laptop.getBrand());
-            }
-        }
 
         Scanner scanner = new Scanner(System.in);
         boolean validInput = false;
@@ -28,6 +21,7 @@ public class Main {
                 System.out.println("1. Операционная система");
                 System.out.println("2. Объем ОЗУ");
                 System.out.println("3. Объем памяти ЖД");
+                System.out.println("4. Цвет");
                 choice = scanner.nextShort();
 
                 if (choice == 1) {
@@ -45,11 +39,15 @@ public class Main {
                     double hdd = scanner.nextDouble();
                     ArrayList<Laptop> filteredNotebooksHDD = filterLaptopsByHDD(notebooks, hdd);
                     displayFilteredLaptops(filteredNotebooksHDD);
-
-                }
+                } else if (choice == 4) {
+                    System.out.println("Введите цвет: ");
+                    String color = scanner.nextLine();
+                    color = scanner.nextLine();
+                    ArrayList<Laptop> filteredNotebooksColor = filterLaptopsByColor(notebooks, color);
+                    displayFilteredLaptops(filteredNotebooksColor);
+                }else System.out.println("Ошибка!");
             } catch (InputMismatchException e) {
                 System.out.println("Неверный формат ввода. Пожалуйста, введите целое число.");
-                // Здесь можно добавить логику для повторного ввода
                 scanner.next();
             }
         }
@@ -62,7 +60,6 @@ public class Main {
                 filteredLaptops.add(laptop);
             }
         }
-        flag = true;
         return filteredLaptops;
     }
 
@@ -73,21 +70,8 @@ public class Main {
                 filteredLaptops.add(laptop);
             }
         }
-        flag = true;
         return filteredLaptops;
     }
-
-    public static ArrayList<Laptop> filterLaptopsByHDD(ArrayList<Laptop> laptops, double hdd) {
-        ArrayList<Laptop> filteredLaptops = new ArrayList<>();
-        for (Laptop laptop : laptops) {
-            if (laptop.getCapacityHDD() == hdd) {
-                filteredLaptops.add(laptop);
-            }
-        }
-        flag = true;
-        return filteredLaptops;
-    }
-
     public static ArrayList<Laptop> filterLaptopsByRAM(ArrayList<Laptop> laptops, double ram) {
         ArrayList<Laptop> filteredLaptops = new ArrayList<>();
         for (Laptop laptop : laptops) {
@@ -95,7 +79,26 @@ public class Main {
                 filteredLaptops.add(laptop);
             }
         }
-        flag = true;
+        return filteredLaptops;
+    }
+    public static ArrayList<Laptop> filterLaptopsByHDD(ArrayList<Laptop> laptops, double hdd) {
+        ArrayList<Laptop> filteredLaptops = new ArrayList<>();
+        for (Laptop laptop : laptops) {
+            if (laptop.getCapacityHDD() == hdd) {
+                filteredLaptops.add(laptop);
+            }
+        }
+
+        return filteredLaptops;
+    }
+    public static ArrayList<Laptop> filterLaptopsByColor(ArrayList<Laptop> laptops, String color) {
+        ArrayList<Laptop> filteredLaptops = new ArrayList<>();
+        for (Laptop laptop : laptops) {
+            if (laptop.getColor().equals(color)) {
+                filteredLaptops.add(laptop);
+            }
+        }
+
         return filteredLaptops;
     }
 
@@ -122,6 +125,9 @@ class Laptop {
         this.color = color;
     }
 
+    public String getColor() {
+        return color;
+    }
     public double getCapacityHDD() {
         return capacityHDD;
     }
